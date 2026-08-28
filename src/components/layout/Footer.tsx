@@ -1,0 +1,67 @@
+import { Link } from "@tanstack/react-router";
+
+import { LEGAL_NAV, MAIN_NAV, SITE } from "@/constants/site";
+import Logo from "./Logo";
+
+export default function Footer() {
+  return (
+    <footer className="mt-24 border-t border-border bg-ivory">
+      <div className="mx-auto grid max-w-7xl gap-12 px-5 py-16 sm:grid-cols-2 lg:grid-cols-4 lg:px-8">
+        <div className="sm:col-span-2 lg:col-span-1">
+          <Logo />
+          <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
+            Preservamos recuerdos familiares con digitalización profesional y trato
+            cuidadoso de cada original.
+          </p>
+        </div>
+
+        <nav aria-label="Navegación del sitio">
+          <h2 className="text-sm font-semibold text-foreground">Navegación</h2>
+          <ul className="mt-4 space-y-2.5">
+            {MAIN_NAV.map((item) => (
+              <li key={item.to}>
+                <Link
+                  to={item.to}
+                  className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <nav aria-label="Información legal">
+          <h2 className="text-sm font-semibold text-foreground">Legal</h2>
+          <ul className="mt-4 space-y-2.5">
+            {LEGAL_NAV.map((item) => (
+              <li key={item.to}>
+                <span className="text-sm text-muted-foreground">{item.label}</span>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <div>
+          <h2 className="text-sm font-semibold text-foreground">Contacto</h2>
+          <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
+            <li>WhatsApp: {SITE.whatsapp}</li>
+            <li>Correo: {SITE.email}</li>
+            <li>Teléfono: {SITE.phone}</li>
+            <li>{SITE.address}</li>
+            <li>Instagram: {SITE.social.instagram}</li>
+          </ul>
+        </div>
+      </div>
+
+      <div className="border-t border-border/70">
+        <div className="mx-auto flex max-w-7xl flex-col gap-2 px-5 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between lg:px-8">
+          <p>
+            © {new Date().getFullYear()} {SITE.name}. Todos los derechos reservados.
+          </p>
+          <p>Hecho con cuidado para historias que no se repiten.</p>
+        </div>
+      </div>
+    </footer>
+  );
+}
