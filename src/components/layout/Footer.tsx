@@ -10,8 +10,8 @@ export default function Footer() {
         <div className="sm:col-span-2 lg:col-span-1">
           <Logo />
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
-            Preservamos recuerdos familiares con digitalización profesional y trato
-            cuidadoso de cada original.
+            Preservamos recuerdos familiares con digitalización profesional y trato cuidadoso de
+            cada original.
           </p>
         </div>
 
@@ -28,6 +28,14 @@ export default function Footer() {
                 </Link>
               </li>
             ))}
+            <li>
+              <Link
+                to="/pedido"
+                className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+              >
+                Consultar pedido
+              </Link>
+            </li>
           </ul>
         </nav>
 
@@ -36,7 +44,12 @@ export default function Footer() {
           <ul className="mt-4 space-y-2.5">
             {LEGAL_NAV.map((item) => (
               <li key={item.to}>
-                <span className="text-sm text-muted-foreground">{item.label}</span>
+                <Link
+                  to={item.to}
+                  className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  {item.label}
+                </Link>
               </li>
             ))}
           </ul>
@@ -45,11 +58,13 @@ export default function Footer() {
         <div>
           <h2 className="text-sm font-semibold text-foreground">Contacto</h2>
           <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
-            <li>WhatsApp: {SITE.whatsapp}</li>
-            <li>Correo: {SITE.email}</li>
-            <li>Teléfono: {SITE.phone}</li>
+            <li>
+              Teléfono:{" "}
+              <a className="hover:text-foreground" href={`tel:${SITE.phoneHref}`}>
+                {SITE.phone}
+              </a>
+            </li>
             <li>{SITE.address}</li>
-            <li>Instagram: {SITE.social.instagram}</li>
           </ul>
         </div>
       </div>

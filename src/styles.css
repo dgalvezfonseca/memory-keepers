@@ -1,6 +1,7 @@
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
+@import "vanilla-cookieconsent/dist/cookieconsent.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -25,6 +26,7 @@
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-brand: var(--brand-pink);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
@@ -73,9 +75,10 @@
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.27 0.012 60);
 
-  /* Marca: arcilla cálida */
-  --primary: oklch(0.53 0.108 42);
-  --primary-foreground: oklch(0.985 0.006 85);
+  /* Marca: valor verificado en el logotipo histórico original de Mikuva. */
+  --brand-pink: #ee2a7b;
+  --primary: var(--brand-pink);
+  --primary-foreground: #111111;
   --clay: oklch(0.53 0.108 42);
 
   --secondary: oklch(0.945 0.017 85);
@@ -90,7 +93,7 @@
 
   --border: oklch(0.9 0.014 82);
   --input: oklch(0.9 0.014 82);
-  --ring: oklch(0.53 0.108 42);
+  --ring: var(--brand-pink);
 
   --chart-1: oklch(0.53 0.108 42);
   --chart-2: oklch(0.68 0.07 60);
@@ -100,12 +103,12 @@
 
   --sidebar: oklch(0.975 0.01 88);
   --sidebar-foreground: oklch(0.27 0.012 60);
-  --sidebar-primary: oklch(0.53 0.108 42);
-  --sidebar-primary-foreground: oklch(0.985 0.006 85);
+  --sidebar-primary: var(--brand-pink);
+  --sidebar-primary-foreground: #111111;
   --sidebar-accent: oklch(0.93 0.024 80);
   --sidebar-accent-foreground: oklch(0.32 0.02 55);
   --sidebar-border: oklch(0.9 0.014 82);
-  --sidebar-ring: oklch(0.53 0.108 42);
+  --sidebar-ring: var(--brand-pink);
 }
 
 @layer base {
@@ -123,7 +126,6 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
     font-feature-settings: "ss01";
-    overflow-x: hidden;
   }
 
   h1,
@@ -194,5 +196,311 @@
   to {
     opacity: 1;
     transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .fade-up {
+    animation: none;
+  }
+}
+
+/* Documentos legales: lectura editorial, no paneles de producto. */
+.legal-document {
+  color: var(--foreground);
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.legal-document > p + p,
+.legal-document section p + p {
+  margin-top: 1rem;
+}
+
+.legal-document section {
+  border-top: 1px solid var(--border);
+  margin-top: 2.75rem;
+  padding-top: 2.25rem;
+}
+
+.legal-document h2 {
+  font-size: clamp(1.65rem, 3vw, 2rem);
+  line-height: 1.2;
+}
+
+.legal-document h3 {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.5;
+  margin-top: 1.75rem;
+}
+
+.legal-document h2 + p,
+.legal-document h2 + ul,
+.legal-document h3 + p,
+.legal-document h3 + ul {
+  margin-top: 1rem;
+}
+
+.legal-document ul {
+  list-style: disc;
+  margin-top: 1rem;
+  padding-left: 1.3rem;
+}
+
+.legal-document li + li {
+  margin-top: 0.65rem;
+}
+
+.legal-document a {
+  color: var(--foreground);
+  text-decoration-color: var(--brand-pink);
+  text-decoration-line: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+}
+
+.legal-document code {
+  overflow-wrap: anywhere;
+}
+
+.legal-table-wrap {
+  margin-top: 1.5rem;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.legal-table-wrap table {
+  border-collapse: collapse;
+  min-width: 42rem;
+  width: 100%;
+}
+
+.legal-table-wrap th,
+.legal-table-wrap td {
+  border-bottom: 1px solid var(--border);
+  padding: 0.85rem 1rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.legal-table-wrap th {
+  background: var(--sand);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.legal-table-wrap td {
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.legal-document .legal-manual {
+  border-left: 2px solid var(--brand-pink);
+  margin-top: 1.5rem;
+  padding: 0.75rem 0 0.75rem 1rem;
+}
+
+/* Scroll interno discreto del resumen lateral; header y footer quedan fuera de esta región. */
+.cart-drawer-scroll {
+  scrollbar-color: var(--border) transparent;
+}
+
+.cart-drawer-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.cart-drawer-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.cart-drawer-scroll::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 9999px;
+}
+
+/* CookieConsent — hoja de privacidad Mikuva */
+#cc-main {
+  --cc-font-family: var(--font-sans);
+  --cc-modal-border-radius: 0.5rem;
+  --cc-btn-border-radius: 0.375rem;
+  --cc-modal-transition-duration: 180ms;
+  --cc-modal-margin: 1rem;
+  --cc-bg: var(--ivory);
+  --cc-primary-color: var(--foreground);
+  --cc-secondary-color: var(--muted-foreground);
+  --cc-btn-primary-bg: var(--brand-pink);
+  --cc-btn-primary-color: var(--primary-foreground);
+  --cc-btn-primary-border-color: var(--brand-pink);
+  --cc-btn-primary-hover-bg: color-mix(in oklab, var(--brand-pink) 86%, black);
+  --cc-btn-primary-hover-color: var(--primary-foreground);
+  --cc-btn-primary-hover-border-color: color-mix(in oklab, var(--brand-pink) 86%, black);
+  --cc-btn-secondary-bg: var(--background);
+  --cc-btn-secondary-color: var(--foreground);
+  --cc-btn-secondary-border-color: var(--border);
+  --cc-btn-secondary-hover-bg: var(--sand);
+  --cc-btn-secondary-hover-color: var(--foreground);
+  --cc-btn-secondary-hover-border-color: color-mix(in oklab, var(--foreground) 28%, transparent);
+  --cc-separator-border-color: var(--border);
+  --cc-toggle-on-bg: var(--brand-pink);
+  --cc-toggle-off-bg: color-mix(in oklab, var(--foreground) 55%, white);
+  --cc-toggle-on-knob-bg: var(--background);
+  --cc-toggle-off-knob-bg: var(--background);
+  --cc-toggle-enabled-icon-color: var(--primary-foreground);
+  --cc-toggle-disabled-icon-color: var(--muted-foreground);
+  --cc-toggle-readonly-bg: var(--muted-foreground);
+  --cc-toggle-readonly-knob-bg: var(--background);
+  --cc-toggle-readonly-knob-icon-color: var(--foreground);
+  --cc-cookie-category-block-bg: var(--background);
+  --cc-cookie-category-block-border: var(--border);
+  --cc-cookie-category-block-hover-bg: var(--sand);
+  --cc-cookie-category-block-hover-border: var(--border);
+  --cc-cookie-category-expanded-block-bg: var(--background);
+  --cc-cookie-category-expanded-block-hover-bg: var(--border);
+  --cc-overlay-bg: color-mix(in oklab, var(--ink) 72%, transparent);
+  --cc-footer-bg: var(--sand);
+  --cc-footer-color: var(--muted-foreground);
+  --cc-footer-border-color: var(--border);
+}
+
+#cc-main .cm,
+#cc-main .pm {
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 28px color-mix(in oklab, var(--ink) 16%, transparent);
+}
+
+#cc-main .cm {
+  border-left: 3px solid var(--brand-pink);
+}
+
+#cc-main .cm__title,
+#cc-main .pm__title {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.015em;
+}
+
+#cc-main .cm__title {
+  font-size: 1.35rem;
+  line-height: 1.15;
+}
+
+#cc-main .pm__title {
+  font-size: 1.45rem;
+  line-height: 1.2;
+}
+
+#cc-main .cm__btn,
+#cc-main .pm__btn,
+#cc-main .pm__close-btn {
+  min-height: 44px;
+}
+
+#cc-main .pm__close-btn {
+  height: 44px;
+  min-width: 44px;
+  width: 44px;
+}
+
+#cc-main .cm .cm__btn,
+#cc-main .cm .cm__btn--secondary {
+  background: var(--background);
+  border-color: color-mix(in oklab, var(--foreground) 34%, transparent);
+  color: var(--foreground);
+}
+
+#cc-main .cm .cm__btn:hover,
+#cc-main .cm .cm__btn--secondary:hover {
+  background: var(--sand);
+  border-color: color-mix(in oklab, var(--foreground) 55%, transparent);
+  color: var(--foreground);
+}
+
+#cc-main .cm__footer {
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+#cc-main .pm__section,
+#cc-main .pm__section--toggle,
+#cc-main .pm__section--toggle .pm__section-title {
+  border-radius: 0.25rem;
+}
+
+#cc-main .pm__badge {
+  border-radius: 0.1875rem;
+}
+
+#cc-main .section__toggle-wrapper:not(.toggle-service) {
+  height: 44px;
+  min-width: 44px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#cc-main .toggle-service {
+  height: 44px;
+  min-width: 44px;
+}
+
+#cc-main .section__toggle,
+#cc-main .toggle__icon,
+#cc-main .toggle__label {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#cc-main .section__toggle:focus-visible ~ .toggle__icon,
+#cc-main button:focus-visible,
+#cc-main a:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+#cc-main .cm--bottom {
+  bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
+#cc-main .cm--left {
+  left: max(1rem, env(safe-area-inset-left));
+}
+
+@media (max-width: 640px) {
+  #cc-main {
+    --cc-modal-margin: 0.75rem;
+  }
+
+  #cc-main .cm__btns,
+  #cc-main .cm__desc,
+  #cc-main .cm__links,
+  #cc-main .cm__title {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  #cc-main .pm {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #cc-main {
+    --cc-modal-transition-duration: 0s;
   }
 }

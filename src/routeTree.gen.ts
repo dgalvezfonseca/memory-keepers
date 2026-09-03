@@ -10,33 +10,284 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AvisoDePrivacidadRouteImport } from './routes/aviso-de-privacidad'
+import { Route as CarritoRouteImport } from './routes/carrito'
+import { Route as CheckoutRouteImport } from './routes/checkout'
+import { Route as ComoFuncionaRouteImport } from './routes/como-funciona'
+import { Route as ContactoRouteImport } from './routes/contacto'
+import { Route as FaqRouteImport } from './routes/faq'
+import { Route as NosotrosRouteImport } from './routes/nosotros'
+import { Route as PedidoRouteImport } from './routes/pedido'
+import { Route as PoliticaDeDevolucionesRouteImport } from './routes/politica-de-devoluciones'
+import { Route as PoliticaDeEnviosRouteImport } from './routes/politica-de-envios'
+import { Route as ServiciosRouteImport } from './routes/servicios'
+import { Route as TerminosYCondicionesRouteImport } from './routes/terminos-y-condiciones'
+import { Route as TiendaRouteImport } from './routes/tienda'
+import { Route as ApiHealthRouteImport } from './routes/api.health'
+import { Route as PagoErrorRouteImport } from './routes/pago.error'
+import { Route as PagoExitosoRouteImport } from './routes/pago.exitoso'
+import { Route as PagoPendienteRouteImport } from './routes/pago.pendiente'
+import { Route as ProductoSlugRouteImport } from './routes/producto.$slug'
+import { Route as ApiWebhooksMercadopagoRouteImport } from './routes/api.webhooks.mercadopago'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AvisoDePrivacidadRoute = AvisoDePrivacidadRouteImport.update({
+  id: '/aviso-de-privacidad',
+  path: '/aviso-de-privacidad',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CarritoRoute = CarritoRouteImport.update({
+  id: '/carrito',
+  path: '/carrito',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutRoute = CheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ComoFuncionaRoute = ComoFuncionaRouteImport.update({
+  id: '/como-funciona',
+  path: '/como-funciona',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactoRoute = ContactoRouteImport.update({
+  id: '/contacto',
+  path: '/contacto',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NosotrosRoute = NosotrosRouteImport.update({
+  id: '/nosotros',
+  path: '/nosotros',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PedidoRoute = PedidoRouteImport.update({
+  id: '/pedido',
+  path: '/pedido',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PoliticaDeDevolucionesRoute = PoliticaDeDevolucionesRouteImport.update({
+  id: '/politica-de-devoluciones',
+  path: '/politica-de-devoluciones',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PoliticaDeEnviosRoute = PoliticaDeEnviosRouteImport.update({
+  id: '/politica-de-envios',
+  path: '/politica-de-envios',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServiciosRoute = ServiciosRouteImport.update({
+  id: '/servicios',
+  path: '/servicios',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TerminosYCondicionesRoute = TerminosYCondicionesRouteImport.update({
+  id: '/terminos-y-condiciones',
+  path: '/terminos-y-condiciones',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TiendaRoute = TiendaRouteImport.update({
+  id: '/tienda',
+  path: '/tienda',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiHealthRoute = ApiHealthRouteImport.update({
+  id: '/api/health',
+  path: '/api/health',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PagoErrorRoute = PagoErrorRouteImport.update({
+  id: '/pago/error',
+  path: '/pago/error',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PagoExitosoRoute = PagoExitosoRouteImport.update({
+  id: '/pago/exitoso',
+  path: '/pago/exitoso',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PagoPendienteRoute = PagoPendienteRouteImport.update({
+  id: '/pago/pendiente',
+  path: '/pago/pendiente',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductoSlugRoute = ProductoSlugRouteImport.update({
+  id: '/producto/$slug',
+  path: '/producto/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiWebhooksMercadopagoRoute = ApiWebhooksMercadopagoRouteImport.update({
+  id: '/api/webhooks/mercadopago',
+  path: '/api/webhooks/mercadopago',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/aviso-de-privacidad': typeof AvisoDePrivacidadRoute
+  '/carrito': typeof CarritoRoute
+  '/checkout': typeof CheckoutRoute
+  '/como-funciona': typeof ComoFuncionaRoute
+  '/contacto': typeof ContactoRoute
+  '/faq': typeof FaqRoute
+  '/nosotros': typeof NosotrosRoute
+  '/pedido': typeof PedidoRoute
+  '/politica-de-devoluciones': typeof PoliticaDeDevolucionesRoute
+  '/politica-de-envios': typeof PoliticaDeEnviosRoute
+  '/servicios': typeof ServiciosRoute
+  '/terminos-y-condiciones': typeof TerminosYCondicionesRoute
+  '/tienda': typeof TiendaRoute
+  '/api/health': typeof ApiHealthRoute
+  '/pago/error': typeof PagoErrorRoute
+  '/pago/exitoso': typeof PagoExitosoRoute
+  '/pago/pendiente': typeof PagoPendienteRoute
+  '/producto/$slug': typeof ProductoSlugRoute
+  '/api/webhooks/mercadopago': typeof ApiWebhooksMercadopagoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/aviso-de-privacidad': typeof AvisoDePrivacidadRoute
+  '/carrito': typeof CarritoRoute
+  '/checkout': typeof CheckoutRoute
+  '/como-funciona': typeof ComoFuncionaRoute
+  '/contacto': typeof ContactoRoute
+  '/faq': typeof FaqRoute
+  '/nosotros': typeof NosotrosRoute
+  '/pedido': typeof PedidoRoute
+  '/politica-de-devoluciones': typeof PoliticaDeDevolucionesRoute
+  '/politica-de-envios': typeof PoliticaDeEnviosRoute
+  '/servicios': typeof ServiciosRoute
+  '/terminos-y-condiciones': typeof TerminosYCondicionesRoute
+  '/tienda': typeof TiendaRoute
+  '/api/health': typeof ApiHealthRoute
+  '/pago/error': typeof PagoErrorRoute
+  '/pago/exitoso': typeof PagoExitosoRoute
+  '/pago/pendiente': typeof PagoPendienteRoute
+  '/producto/$slug': typeof ProductoSlugRoute
+  '/api/webhooks/mercadopago': typeof ApiWebhooksMercadopagoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/aviso-de-privacidad': typeof AvisoDePrivacidadRoute
+  '/carrito': typeof CarritoRoute
+  '/checkout': typeof CheckoutRoute
+  '/como-funciona': typeof ComoFuncionaRoute
+  '/contacto': typeof ContactoRoute
+  '/faq': typeof FaqRoute
+  '/nosotros': typeof NosotrosRoute
+  '/pedido': typeof PedidoRoute
+  '/politica-de-devoluciones': typeof PoliticaDeDevolucionesRoute
+  '/politica-de-envios': typeof PoliticaDeEnviosRoute
+  '/servicios': typeof ServiciosRoute
+  '/terminos-y-condiciones': typeof TerminosYCondicionesRoute
+  '/tienda': typeof TiendaRoute
+  '/api/health': typeof ApiHealthRoute
+  '/pago/error': typeof PagoErrorRoute
+  '/pago/exitoso': typeof PagoExitosoRoute
+  '/pago/pendiente': typeof PagoPendienteRoute
+  '/producto/$slug': typeof ProductoSlugRoute
+  '/api/webhooks/mercadopago': typeof ApiWebhooksMercadopagoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/aviso-de-privacidad'
+    | '/carrito'
+    | '/checkout'
+    | '/como-funciona'
+    | '/contacto'
+    | '/faq'
+    | '/nosotros'
+    | '/pedido'
+    | '/politica-de-devoluciones'
+    | '/politica-de-envios'
+    | '/servicios'
+    | '/terminos-y-condiciones'
+    | '/tienda'
+    | '/api/health'
+    | '/pago/error'
+    | '/pago/exitoso'
+    | '/pago/pendiente'
+    | '/producto/$slug'
+    | '/api/webhooks/mercadopago'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/aviso-de-privacidad'
+    | '/carrito'
+    | '/checkout'
+    | '/como-funciona'
+    | '/contacto'
+    | '/faq'
+    | '/nosotros'
+    | '/pedido'
+    | '/politica-de-devoluciones'
+    | '/politica-de-envios'
+    | '/servicios'
+    | '/terminos-y-condiciones'
+    | '/tienda'
+    | '/api/health'
+    | '/pago/error'
+    | '/pago/exitoso'
+    | '/pago/pendiente'
+    | '/producto/$slug'
+    | '/api/webhooks/mercadopago'
+  id:
+    | '__root__'
+    | '/'
+    | '/aviso-de-privacidad'
+    | '/carrito'
+    | '/checkout'
+    | '/como-funciona'
+    | '/contacto'
+    | '/faq'
+    | '/nosotros'
+    | '/pedido'
+    | '/politica-de-devoluciones'
+    | '/politica-de-envios'
+    | '/servicios'
+    | '/terminos-y-condiciones'
+    | '/tienda'
+    | '/api/health'
+    | '/pago/error'
+    | '/pago/exitoso'
+    | '/pago/pendiente'
+    | '/producto/$slug'
+    | '/api/webhooks/mercadopago'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AvisoDePrivacidadRoute: typeof AvisoDePrivacidadRoute
+  CarritoRoute: typeof CarritoRoute
+  CheckoutRoute: typeof CheckoutRoute
+  ComoFuncionaRoute: typeof ComoFuncionaRoute
+  ContactoRoute: typeof ContactoRoute
+  FaqRoute: typeof FaqRoute
+  NosotrosRoute: typeof NosotrosRoute
+  PedidoRoute: typeof PedidoRoute
+  PoliticaDeDevolucionesRoute: typeof PoliticaDeDevolucionesRoute
+  PoliticaDeEnviosRoute: typeof PoliticaDeEnviosRoute
+  ServiciosRoute: typeof ServiciosRoute
+  TerminosYCondicionesRoute: typeof TerminosYCondicionesRoute
+  TiendaRoute: typeof TiendaRoute
+  ApiHealthRoute: typeof ApiHealthRoute
+  PagoErrorRoute: typeof PagoErrorRoute
+  PagoExitosoRoute: typeof PagoExitosoRoute
+  PagoPendienteRoute: typeof PagoPendienteRoute
+  ProductoSlugRoute: typeof ProductoSlugRoute
+  ApiWebhooksMercadopagoRoute: typeof ApiWebhooksMercadopagoRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +299,163 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/aviso-de-privacidad': {
+      id: '/aviso-de-privacidad'
+      path: '/aviso-de-privacidad'
+      fullPath: '/aviso-de-privacidad'
+      preLoaderRoute: typeof AvisoDePrivacidadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/carrito': {
+      id: '/carrito'
+      path: '/carrito'
+      fullPath: '/carrito'
+      preLoaderRoute: typeof CarritoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout': {
+      id: '/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof CheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/como-funciona': {
+      id: '/como-funciona'
+      path: '/como-funciona'
+      fullPath: '/como-funciona'
+      preLoaderRoute: typeof ComoFuncionaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contacto': {
+      id: '/contacto'
+      path: '/contacto'
+      fullPath: '/contacto'
+      preLoaderRoute: typeof ContactoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nosotros': {
+      id: '/nosotros'
+      path: '/nosotros'
+      fullPath: '/nosotros'
+      preLoaderRoute: typeof NosotrosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pedido': {
+      id: '/pedido'
+      path: '/pedido'
+      fullPath: '/pedido'
+      preLoaderRoute: typeof PedidoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/politica-de-devoluciones': {
+      id: '/politica-de-devoluciones'
+      path: '/politica-de-devoluciones'
+      fullPath: '/politica-de-devoluciones'
+      preLoaderRoute: typeof PoliticaDeDevolucionesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/politica-de-envios': {
+      id: '/politica-de-envios'
+      path: '/politica-de-envios'
+      fullPath: '/politica-de-envios'
+      preLoaderRoute: typeof PoliticaDeEnviosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/servicios': {
+      id: '/servicios'
+      path: '/servicios'
+      fullPath: '/servicios'
+      preLoaderRoute: typeof ServiciosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terminos-y-condiciones': {
+      id: '/terminos-y-condiciones'
+      path: '/terminos-y-condiciones'
+      fullPath: '/terminos-y-condiciones'
+      preLoaderRoute: typeof TerminosYCondicionesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tienda': {
+      id: '/tienda'
+      path: '/tienda'
+      fullPath: '/tienda'
+      preLoaderRoute: typeof TiendaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/health': {
+      id: '/api/health'
+      path: '/api/health'
+      fullPath: '/api/health'
+      preLoaderRoute: typeof ApiHealthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pago/error': {
+      id: '/pago/error'
+      path: '/pago/error'
+      fullPath: '/pago/error'
+      preLoaderRoute: typeof PagoErrorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pago/exitoso': {
+      id: '/pago/exitoso'
+      path: '/pago/exitoso'
+      fullPath: '/pago/exitoso'
+      preLoaderRoute: typeof PagoExitosoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pago/pendiente': {
+      id: '/pago/pendiente'
+      path: '/pago/pendiente'
+      fullPath: '/pago/pendiente'
+      preLoaderRoute: typeof PagoPendienteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/producto/$slug': {
+      id: '/producto/$slug'
+      path: '/producto/$slug'
+      fullPath: '/producto/$slug'
+      preLoaderRoute: typeof ProductoSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/webhooks/mercadopago': {
+      id: '/api/webhooks/mercadopago'
+      path: '/api/webhooks/mercadopago'
+      fullPath: '/api/webhooks/mercadopago'
+      preLoaderRoute: typeof ApiWebhooksMercadopagoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AvisoDePrivacidadRoute: AvisoDePrivacidadRoute,
+  CarritoRoute: CarritoRoute,
+  CheckoutRoute: CheckoutRoute,
+  ComoFuncionaRoute: ComoFuncionaRoute,
+  ContactoRoute: ContactoRoute,
+  FaqRoute: FaqRoute,
+  NosotrosRoute: NosotrosRoute,
+  PedidoRoute: PedidoRoute,
+  PoliticaDeDevolucionesRoute: PoliticaDeDevolucionesRoute,
+  PoliticaDeEnviosRoute: PoliticaDeEnviosRoute,
+  ServiciosRoute: ServiciosRoute,
+  TerminosYCondicionesRoute: TerminosYCondicionesRoute,
+  TiendaRoute: TiendaRoute,
+  ApiHealthRoute: ApiHealthRoute,
+  PagoErrorRoute: PagoErrorRoute,
+  PagoExitosoRoute: PagoExitosoRoute,
+  PagoPendienteRoute: PagoPendienteRoute,
+  ProductoSlugRoute: ProductoSlugRoute,
+  ApiWebhooksMercadopagoRoute: ApiWebhooksMercadopagoRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

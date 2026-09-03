@@ -1,9 +1,4 @@
-export type CategorySlug =
-  | "fotografias"
-  | "negativos"
-  | "diapositivas"
-  | "albumes"
-  | "peliculas";
+export type CategorySlug = "fotografias" | "negativos" | "diapositivas" | "albumes" | "peliculas";
 
 export interface Category {
   slug: CategorySlug;
@@ -58,6 +53,8 @@ export interface Product {
 
 export interface CartItemConfig {
   summary: string;
+  /** Stable database variant code; browser labels and prices are never authoritative. */
+  variantCode?: string;
   quantity?: number;
   tierLabel?: string;
   filmType?: string;

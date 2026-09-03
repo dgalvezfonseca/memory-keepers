@@ -2,70 +2,82 @@ import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 
 import { Section, SectionHeading } from "@/components/ui/section";
-import { CATEGORIES, PRODUCTS } from "@/data/catalog";
-import { formatPrice } from "@/lib/format";
+import { PRODUCTS } from "@/data/catalog";
 
-const DESCRIPTIONS: Record<string, string> = {
-  fotografias: "Digitalizamos tus fotografías impresas en alta resolución.",
-  negativos: "Recuperamos el detalle que quedó guardado en la película.",
-  diapositivas: "Volvemos a ver las transparencias, cuadro por cuadro.",
-  albumes: "Escaneamos álbumes completos sin desmontar una sola foto.",
-  peliculas: "Carretes de 8mm y Super 8 transferidos con cuidado.",
+const SERVICE_LAYOUTS = [
+  "md:col-span-7",
+  "md:col-span-5 md:mt-20",
+  "md:col-span-5",
+  "md:col-span-7 md:mt-12",
+  "md:col-span-7",
+  "md:col-span-5 md:mt-16",
+] as const;
+
+const SERVICE_NAMES: Record<string, string> = {
+  "digitalizacion-de-fotografias": "Fotografías",
+  "digitalizacion-de-negativos": "Negativos",
+  "digitalizacion-de-diapositivas": "Diapositivas",
+  "digitalizacion-de-albumes": "Álbumes",
+  "digitalizacion-8mm": "8 mm",
+  "digitalizacion-super-8": "Super 8",
 };
 
 export default function CategoryGrid() {
   return (
     <Section tone="default">
-      <SectionHeading
-        eyebrow="Qué puedes digitalizar"
-        title="Cada formato tiene su propio proceso."
-        description="No todo el material se trata igual. Elegimos el equipo y el manejo según lo que llega a nuestras manos."
-      />
+      <div className="grid min-w-0 gap-8 border-b border-border pb-10 md:grid-cols-12 md:items-end">
+        <SectionHeading
+          eyebrow="Qué puedes digitalizar"
+          title="Una forma distinta de volver a cada recuerdo."
+          className="md:col-span-8"
+        />
+        <p className="max-w-md text-sm leading-6 text-muted-foreground md:col-span-4 md:justify-self-end">
+          Elige el material que tienes. Cada opción te lleva al servicio y a sus detalles.
+        </p>
+      </div>
 
-      <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {CATEGORIES.map((category) => {
-          const cheapest = Math.min(
-            ...PRODUCTS.filter((p) => p.category === category.slug).map((p) => p.priceFrom),
-          );
-          return (
-            <Link
-              key={category.slug}
-              to="/tienda"
-              search={{ categoria: category.slug }}
-              className="group flex flex-col overflow-hidden rounded-lg border border-border bg-card transition-colors hover:border-primary/40"
-            >
+      <div className="mt-10 grid min-w-0 gap-x-8 gap-y-14 md:grid-cols-12 md:gap-y-20 lg:gap-x-12">
+        {PRODUCTS.filter((product) => product.active).map((product, index) => (
+          <Link
+            key={product.slug}
+            to="/producto/$slug"
+            params={{ slug: product.slug }}
+            className={`group block min-w-0 ${SERVICE_LAYOUTS[index]}`}
+          >
+            <div className="overflow-hidden bg-sand">
               <img
-                src={category.image}
-                alt={category.tagline}
+                src={product.image}
+                alt={product.shortDescription}
                 loading="lazy"
                 width={1024}
                 height={768}
-                className="aspect-[4/3] w-full object-cover"
+                sizes="(min-width: 768px) 55vw, 100vw"
+                className={`w-full object-cover transition-transform duration-500 group-hover:scale-[1.015] ${
+                  index % 3 === 1
+                    ? "aspect-[5/4] max-h-[30rem] md:aspect-[6/5]"
+                    : "aspect-[4/3] max-h-[28rem]"
+                }`}
               />
-              <div className="flex flex-1 flex-col p-6">
-                <h3 className="font-serif text-2xl">{category.name}</h3>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">
-                  {DESCRIPTIONS[category.slug]}
+            </div>
+            <div className="mt-4 grid grid-cols-[auto_1fr_auto] items-start gap-3 border-t border-foreground/20 pt-4">
+              <span className="pt-1 text-xs tabular-nums text-muted-foreground">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <div>
+                <h3 className="font-serif text-2xl leading-none sm:text-3xl">
+                  {SERVICE_NAMES[product.slug] ?? product.name}
+                </h3>
+                <p className="mt-2 max-w-md text-sm leading-6 text-muted-foreground">
+                  {product.shortDescription}
                 </p>
-                <div className="mt-5 flex items-center justify-between border-t border-border pt-4">
-                  <span className="text-sm text-muted-foreground">
-                    Desde{" "}
-                    <span className="font-semibold text-foreground">
-                      {formatPrice(cheapest)}
-                    </span>
-                  </span>
-                  <span className="inline-flex items-center gap-1 text-sm font-medium text-primary">
-                    Ver opciones
-                    <ArrowRight
-                      className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
-                      aria-hidden
-                    />
-                  </span>
-                </div>
               </div>
-            </Link>
-          );
-        })}
+              <span className="flex h-11 w-11 items-center justify-center border border-border text-foreground transition-colors group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground">
+                <ArrowRight className="h-4 w-4" aria-hidden />
+                <span className="sr-only">Ver {SERVICE_NAMES[product.slug] ?? product.name}</span>
+              </span>
+            </div>
+          </Link>
+        ))}
       </div>
     </Section>
   );

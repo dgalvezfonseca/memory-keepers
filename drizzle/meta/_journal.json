@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1788207595256,
+      "tag": "0000_lucky_network",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1788221633570,
+      "tag": "0001_huge_silver_sable",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1788299427193,
+      "tag": "0002_colossal_venom",
+      "breakpoints": true
+    }
+  ]
+}

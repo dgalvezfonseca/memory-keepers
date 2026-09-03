@@ -3,11 +3,9 @@ export const SITE = {
   tagline: "Preservación y digitalización de recuerdos familiares",
   description:
     "Digitalizamos fotografías, negativos, diapositivas, álbumes y películas 8mm y Super 8 para conservar tus historias por generaciones.",
-  /* Datos por confirmar con el cliente */
-  whatsapp: "[WHATSAPP_NUMBER]",
-  email: "[EMAIL]",
-  phone: "[TELÉFONO]",
-  address: "[DIRECCIÓN]",
+  phone: "+52 (55) 3004-2777",
+  phoneHref: "+525530042777",
+  address: "Av. Miguel Hidalgo 24-B, Lago de Gpe, Cuautitlán Izcalli, EdoMex, 54760",
   social: {
     instagram: "[INSTAGRAM]",
     facebook: "[FACEBOOK]",
@@ -26,10 +24,10 @@ export const MAIN_NAV = [
 
 export const LEGAL_NAV = [
   { label: "Aviso de privacidad", to: "/aviso-de-privacidad" },
-  { label: "Términos y condiciones", to: "/terminos" },
-  { label: "Política de envíos", to: "/envios" },
-  { label: "Política de devolución", to: "/devoluciones" },
+  { label: "Términos y condiciones", to: "/terminos-y-condiciones" },
+  { label: "Política de envíos", to: "/politica-de-envios" },
+  { label: "Política de devoluciones", to: "/politica-de-devoluciones" },
 ] as const;
 
 export const PRICING_NOTE =
-  "Precios de referencia [POR CONFIRMAR]. El cotizador final se ajusta al material recibido.";
+  "Los precios de digitalización se calculan según la información y cantidad declaradas. Si el material recibido difiere en cantidad, formato o tipo, te comunicaremos cualquier ajuste para obtener tu autorización antes de continuar.";

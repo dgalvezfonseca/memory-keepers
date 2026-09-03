@@ -1,70 +1,72 @@
 import { Section } from "@/components/ui/section";
-import escaneo from "@/assets/proceso-escaneo.jpg";
+import preparacion from "@/assets/historicas/Preparacion-fotografias-mikuva.png";
 
-export const VALUES = [
+const VALUES = [
   {
-    title: "Manejo cuidadoso de originales",
-    text: "Cada pieza se registra al llegar y se manipula con guantes y superficies limpias.",
+    title: "Un proceso según el material",
+    text: "Fotografías, álbumes, negativos, diapositivas y película no se presentan como si fueran el mismo servicio.",
   },
   {
-    title: "Digitalización profesional",
-    text: "Equipo dedicado según el formato: papel, película, transparencia o carrete.",
+    title: "Decisiones que puedes revisar",
+    text: "Las opciones de formato y cantidad quedan visibles antes de avanzar con tu selección.",
   },
   {
-    title: "Control de calidad",
-    text: "Revisamos archivo por archivo antes de entregar. Si algo no salió bien, se repite.",
-  },
-  {
-    title: "Privacidad",
-    text: "Tu material no se publica ni se comparte. Las copias de trabajo se eliminan al cerrar el pedido.",
-  },
-  {
-    title: "Atención personalizada",
-    text: "Hablas con la misma persona desde la cotización hasta la entrega.",
-  },
-  {
-    title: "Entrega organizada",
-    text: "Archivos nombrados y ordenados por carpetas, listos para guardar y compartir.",
+    title: "Espacio para preguntar",
+    text: "Si no reconoces el formato o no sabes cuánto material tienes, puedes pedir orientación antes de elegir.",
   },
 ];
 
 export default function WhyMikuva() {
   return (
     <Section tone="default">
-      <div className="grid gap-14 lg:grid-cols-[1fr_1.1fr] lg:gap-20">
-        <div className="lg:sticky lg:top-28 lg:self-start">
+      <div className="grid gap-10 lg:grid-cols-12 lg:items-start lg:gap-8">
+        <div className="lg:col-span-5 lg:pt-16">
           <p className="eyebrow">Por qué Mikuva</p>
-          <h2 className="display mt-3 text-3xl md:text-4xl">
-            Las fotos envejecen.
-            <br />
-            Las historias no deberían.
+          <h2 className="display mt-3 max-w-lg text-3xl md:text-5xl">
+            Confiar empieza por entender qué pasará después.
           </h2>
-          <p className="mt-5 max-w-md leading-relaxed text-muted-foreground">
-            Trabajamos con material que no tiene copia. Por eso cada pedido tiene un
-            registro, un responsable y una revisión final antes de salir.
+          <p className="mt-6 max-w-md leading-7 text-muted-foreground">
+            Tu archivo familiar puede ser irreemplazable. Por eso la experiencia debe ayudarte a
+            elegir con claridad, sin esconder dudas detrás de promesas generales.
           </p>
-          <div className="mt-8 overflow-hidden rounded-lg border border-border">
-            <img
-              src={escaneo}
-              alt="Especialista con guantes colocando una fotografía antigua en un escáner profesional"
-              loading="lazy"
-              width={1400}
-              height={1000}
-              className="w-full object-cover"
-            />
-          </div>
+          <dl className="mt-10 border-t border-border">
+            {VALUES.map((value, index) => (
+              <div
+                key={value.title}
+                className="grid grid-cols-[2rem_1fr] gap-3 border-b border-border py-5"
+              >
+                <span
+                  className="pt-0.5 text-xs font-semibold tabular-nums text-foreground/65"
+                  aria-hidden
+                >
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <div>
+                  <dt className="font-medium text-foreground">{value.title}</dt>
+                  <dd className="mt-2 text-sm leading-6 text-muted-foreground">{value.text}</dd>
+                </div>
+              </div>
+            ))}
+          </dl>
         </div>
 
-        <dl className="grid gap-x-10 gap-y-8 sm:grid-cols-2">
-          {VALUES.map((value) => (
-            <div key={value.title} className="border-t border-border pt-5">
-              <dt className="font-medium text-foreground">{value.title}</dt>
-              <dd className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                {value.text}
-              </dd>
-            </div>
-          ))}
-        </dl>
+        <figure className="lg:col-span-7 lg:pl-8">
+          <div className="overflow-hidden border border-border bg-card p-1.5">
+            <img
+              src={preparacion}
+              alt="Manos organizando por grupos varias pilas de fotografías familiares"
+              loading="lazy"
+              width={1408}
+              height={768}
+              sizes="(min-width: 1024px) 56vw, 100vw"
+              className="aspect-[4/3] max-h-[30rem] w-full object-cover sm:aspect-[7/5] lg:aspect-[5/4] lg:max-h-[34rem]"
+            />
+          </div>
+          <figcaption className="mt-3 flex justify-between gap-4 text-xs text-muted-foreground">
+            <span>Preparación del archivo</span>
+            <span>Archivo de trabajo</span>
+          </figcaption>
+        </figure>
       </div>
     </Section>
   );

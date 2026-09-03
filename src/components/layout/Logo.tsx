@@ -1,11 +1,13 @@
+import logoMikuva from "@/assets/marca/cropped-LOGO-MIKUVA.gif";
+
 export default function Logo({ className = "" }: { className?: string }) {
   return (
-    <span className={`flex items-center gap-2 ${className}`}>
-      <span
-        aria-hidden
-        className="inline-block h-4 w-4 rounded-[3px] border-2 border-primary"
-      />
-      <span className="font-serif text-2xl tracking-tight text-foreground">Mikuva</span>
-    </span>
+    <img
+      src={logoMikuva}
+      alt="Mikuva, digitalización de fotografías"
+      width={729}
+      height={250}
+      className={`h-9 w-auto mix-blend-multiply sm:h-10 ${className}`}
+    />
   );
 }

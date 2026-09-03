@@ -7,14 +7,46 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
+node_modules/
+dist/
 dist-ssr
-.output
+build
+coverage
+.output/
 .vinxi
 .tanstack/**
 .nitro
 *.local
+
+# Environment files (real credentials must never be committed)
+.env
+.env.*
+!.env.example
+
+# Database dumps and local data (Drizzle migrations remain versioned)
+*.sql
+*.dump
+*.bak
+!drizzle/**/*.sql
+migration-source/
+mysql-data/
+mariadb-data/
+
+# Private keys and certificates
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Backups, server files, and temporary artifacts
+*.wpress
+backups/
+backup/
+private/
+server-private/
+*.tmp
+*.temp
+Thumbs.db
 
 # Wrangler / Cloudflare
 .wrangler/

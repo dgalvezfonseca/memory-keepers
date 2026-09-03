@@ -1,12 +1,12 @@
 import type { Category, Product } from "@/types/catalog";
 
-import fotografias from "@/assets/cat-fotografias.jpg";
-import negativos from "@/assets/cat-negativos.jpg";
-import diapositivas from "@/assets/cat-diapositivas.jpg";
-import albumes from "@/assets/cat-albumes.jpg";
-import ochoMm from "@/assets/cat-8mm.jpg";
-import super8 from "@/assets/cat-super8.jpg";
-import escaneo from "@/assets/proceso-escaneo.jpg";
+import fotografias from "@/assets/historicas/Fotos-minimikuva.png";
+import negativos from "@/assets/historicas/image_fx_-13.png";
+import diapositivas from "@/assets/historicas/image_fx_-10-1.png";
+import albumes from "@/assets/historicas/Album.png";
+import ochoMm from "@/assets/historicas/IMG_0787.jpeg";
+import super8 from "@/assets/historicas/IMG_0788.jpeg";
+import preparacion from "@/assets/historicas/Preparacion-fotografias-mikuva.png";
 
 /**
  * Mock data estructurado igual que el esquema previsto en base de datos
@@ -52,38 +52,37 @@ export const CATEGORY_LABEL: Record<string, string> = Object.fromEntries(
 );
 
 const photoTiers = [
-  { units: 100, price: 990, label: "Paquete 100" },
-  { units: 500, price: 3990, label: "Paquete 500" },
-  { units: 1000, price: 6990, label: "Paquete 1,000" },
-  { units: 1500, price: 9490, label: "Paquete 1,500" },
-  { units: 3000, price: 16900, label: "Paquete 3,000" },
-  { units: 5000, price: 24900, label: "Paquete 5,000" },
+  { units: 100, price: 500, label: "Paquete 100" },
+  { units: 500, price: 1500, label: "Paquete 500" },
+  { units: 1000, price: 2500, label: "Paquete 1,000" },
+  { units: 3000, price: 6750, label: "Paquete 3,000" },
+  { units: 5000, price: 10000, label: "Paquete 5,000" },
 ];
 
 const reelSizes = [
-  { id: '3"', label: '3 pulgadas', feet: "≈ 50 pies", duration: "≈ 3 min", price: 390 },
-  { id: '4"', label: '4 pulgadas', feet: "≈ 100 pies", duration: "≈ 6 min", price: 590 },
-  { id: '5"', label: '5 pulgadas', feet: "≈ 200 pies", duration: "≈ 12 min", price: 890 },
-  { id: '6"', label: '6 pulgadas', feet: "≈ 300 pies", duration: "≈ 18 min", price: 1190 },
-  { id: '7"', label: '7 pulgadas', feet: "≈ 400 pies", duration: "≈ 24 min", price: 1490 },
-  { id: '9"', label: '9 pulgadas', feet: "≈ 800 pies", duration: "≈ 48 min", price: 2290 },
+  { id: '3"', label: "3 pulgadas", feet: "≈ 50 pies", duration: "≈ 3 min", price: 300 },
+  { id: '4"', label: "4 pulgadas", feet: "≈ 100 pies", duration: "≈ 6 min", price: 600 },
+  { id: '5"', label: "5 pulgadas", feet: "≈ 200 pies", duration: "≈ 12 min", price: 1200 },
+  { id: '6"', label: "6 pulgadas", feet: "≈ 300 pies", duration: "≈ 15 min", price: 1500 },
+  { id: '7"', label: "7 pulgadas", feet: "≈ 400 pies", duration: "≈ 25 min", price: 2500 },
+  { id: '9"', label: "9 pulgadas", feet: "≈ 590 pies", duration: "≈ 30 min", price: 3000 },
 ];
 
 const commonFaqs = [
   {
     question: "¿Cómo les hago llegar mi material?",
     answer:
-      "Puedes entregarlo en persona o enviarlo por paquetería. Te compartimos una guía de empaque para que el material viaje protegido.",
+      "Puedes entregarlo en persona o enviarlo por paquetería. La dirección, las modalidades disponibles y la guía definitiva están [INFORMACIÓN POR CONFIRMAR].",
   },
   {
     question: "¿Me devuelven los originales?",
     answer:
-      "Siempre. Los originales regresan contigo en el mismo orden en que los recibimos, junto con tus archivos digitales.",
+      "El servicio contempla la devolución de tus originales. Los detalles de envío, seguro y tiempos están [INFORMACIÓN POR CONFIRMAR].",
   },
   {
     question: "¿Cuánto tarda el proceso?",
     answer:
-      "Depende del volumen y del estado del material. Al recibir tu pedido te confirmamos un tiempo estimado por escrito.",
+      "Depende del volumen y del estado del material. Los plazos de referencia y la forma de confirmarlos están [INFORMACIÓN POR CONFIRMAR].",
   },
 ];
 
@@ -97,8 +96,8 @@ export const PRODUCTS: Product[] = [
     description:
       "Escaneamos tus fotografías impresas una por una, con limpieza previa y revisión de cada archivo. Conservamos el orden en el que nos entregas el material para que puedas reconocer cada etapa de tu historia.",
     image: fotografias,
-    gallery: [fotografias, escaneo, albumes],
-    priceFrom: 990,
+    gallery: [fotografias, preparacion, albumes],
+    priceFrom: 500,
     unitLabel: "fotografías",
     configurator: "quantity",
     tiers: photoTiers,
@@ -125,15 +124,17 @@ export const PRODUCTS: Product[] = [
     description:
       "Digitalizamos tus negativos con equipo dedicado a película, recuperando detalle y color que muchas veces nunca se vio en papel.",
     image: negativos,
-    gallery: [negativos, escaneo],
-    priceFrom: 1290,
+    gallery: [negativos, preparacion],
+    priceFrom: 725,
     unitLabel: "cuadros",
     configurator: "quantity",
     tiers: [
-      { units: 100, price: 1290, label: "Paquete 100" },
-      { units: 500, price: 4990, label: "Paquete 500" },
-      { units: 1000, price: 8990, label: "Paquete 1,000" },
-      { units: 3000, price: 21900, label: "Paquete 3,000" },
+      { units: 100, price: 725, label: "Paquete 100" },
+      { units: 200, price: 1400, label: "Paquete 200" },
+      { units: 500, price: 3475, label: "Paquete 500" },
+      { units: 1000, price: 6900, label: "Paquete 1,000" },
+      { units: 3000, price: 20550, label: "Paquete 3,000" },
+      { units: 5000, price: 34000, label: "Paquete 5,000" },
     ],
     includes: [
       "Escaneo dedicado de película",
@@ -158,15 +159,17 @@ export const PRODUCTS: Product[] = [
     description:
       "Recuperamos tus diapositivas cuadro por cuadro, incluso las que llevan décadas guardadas en cajas o carruseles.",
     image: diapositivas,
-    gallery: [diapositivas, escaneo],
-    priceFrom: 1190,
+    gallery: [diapositivas, preparacion],
+    priceFrom: 725,
     unitLabel: "diapositivas",
     configurator: "quantity",
     tiers: [
-      { units: 100, price: 1190, label: "Paquete 100" },
-      { units: 500, price: 4590, label: "Paquete 500" },
-      { units: 1000, price: 8290, label: "Paquete 1,000" },
-      { units: 3000, price: 19900, label: "Paquete 3,000" },
+      { units: 100, price: 725, label: "Paquete 100" },
+      { units: 200, price: 1400, label: "Paquete 200" },
+      { units: 500, price: 3475, label: "Paquete 500" },
+      { units: 1000, price: 6900, label: "Paquete 1,000" },
+      { units: 3000, price: 20550, label: "Paquete 3,000" },
+      { units: 5000, price: 34000, label: "Paquete 5,000" },
     ],
     includes: [
       "Escaneo cuadro por cuadro",
@@ -191,15 +194,13 @@ export const PRODUCTS: Product[] = [
     description:
       "Digitalizamos álbumes completos respetando su encuadernación. Puedes elegir el escaneo página por página o foto por foto.",
     image: albumes,
-    gallery: [albumes, escaneo],
-    priceFrom: 1490,
-    unitLabel: "páginas",
+    gallery: [albumes, preparacion],
+    priceFrom: 1800,
+    unitLabel: "fotografías",
     configurator: "quantity",
     tiers: [
-      { units: 50, price: 1490, label: "Paquete 50" },
-      { units: 100, price: 2590, label: "Paquete 100" },
-      { units: 300, price: 6790, label: "Paquete 300" },
-      { units: 500, price: 9990, label: "Paquete 500" },
+      { units: 200, price: 1800, label: "Paquete 200" },
+      { units: 400, price: 3200, label: "Paquete 400" },
     ],
     includes: [
       "Escaneo de página completa",
@@ -224,11 +225,11 @@ export const PRODUCTS: Product[] = [
     description:
       "Transferimos tus carretes de 8mm cuadro por cuadro, sin proyectar la película sobre una pared. El resultado es un video estable y limpio.",
     image: ochoMm,
-    gallery: [ochoMm, super8, escaneo],
-    priceFrom: 390,
+    gallery: [ochoMm, super8, preparacion],
+    priceFrom: 300,
     unitLabel: "carretes",
     configurator: "film",
-    filmTypes: ["8mm", "Super 8"],
+    filmTypes: ["8mm"],
     reels: reelSizes,
     includes: [
       "Transferencia cuadro por cuadro",
@@ -253,11 +254,11 @@ export const PRODUCTS: Product[] = [
     description:
       "Tratamiento específico para Super 8, respetando la cadencia original de la película y con revisión de cada transferencia.",
     image: super8,
-    gallery: [super8, ochoMm, escaneo],
-    priceFrom: 390,
+    gallery: [super8, ochoMm, preparacion],
+    priceFrom: 300,
     unitLabel: "carretes",
     configurator: "film",
-    filmTypes: ["Super 8", "8mm"],
+    filmTypes: ["Super 8"],
     reels: reelSizes,
     includes: [
       "Transferencia cuadro por cuadro",
@@ -288,16 +289,16 @@ export const HOME_FAQS = [
   {
     question: "¿En qué resolución entregan las fotografías?",
     answer:
-      "Trabajamos en alta resolución, suficiente para reimprimir en tamaños mayores al original. La resolución exacta depende del formato del material.",
+      "La resolución exacta depende del formato y del estado del material. Las especificaciones finales de entrega están [INFORMACIÓN POR CONFIRMAR].",
   },
   {
     question: "¿Cómo recibo mis archivos?",
     answer:
-      "Puedes recibirlos en USB, disco duro o mediante una liga de descarga privada. También podemos organizarlos por carpetas y fechas.",
+      "Las opciones de descarga o entrega en una unidad física, así como su organización, están [INFORMACIÓN POR CONFIRMAR].",
   },
   {
     question: "¿Qué pasa con mi privacidad?",
     answer:
-      "Tu material es tuyo. No lo publicamos ni lo compartimos, y eliminamos las copias de trabajo después del periodo de resguardo acordado.",
+      "El aviso de privacidad explica el tratamiento y acceso a tus archivos. Después de la entrega, Mikuva conserva las copias TIFF y JPEG durante 15 días naturales para atender incidencias o correcciones y después las elimina de sus servidores.",
   },
 ];
