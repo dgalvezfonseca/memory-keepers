@@ -6,8 +6,8 @@ CREATE TABLE `payment_events` (
 	`event_type` varchar(64) NOT NULL,
 	`action` varchar(96) NOT NULL,
 	`processed_status` varchar(96) NOT NULL,
-	`created_at` timestamp(3) NOT NULL DEFAULT (now()),
-	`processed_at` timestamp(3) NOT NULL DEFAULT (now()),
+	`created_at` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+	`processed_at` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 	CONSTRAINT `payment_events_id` PRIMARY KEY(`id`),
 	CONSTRAINT `payment_events_provider_event_unique` UNIQUE(`provider`,`provider_event_key`)
 );

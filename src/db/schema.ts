@@ -64,9 +64,14 @@ export type OrderItemConfigurationSnapshot = {
   variantMetadata: ProductVariantMetadata | null;
 };
 
-const createdAt = () => timestamp("created_at", { mode: "date", fsp: 3 }).defaultNow().notNull();
+const currentTimestamp3 = () => sql`CURRENT_TIMESTAMP(3)`;
+const createdAt = () =>
+  timestamp("created_at", { mode: "date", fsp: 3 }).default(currentTimestamp3()).notNull();
 const updatedAt = () =>
-  timestamp("updated_at", { mode: "date", fsp: 3 }).defaultNow().onUpdateNow().notNull();
+  timestamp("updated_at", { mode: "date", fsp: 3 })
+    .default(currentTimestamp3())
+    .onUpdateNow()
+    .notNull();
 const money = (name: string) => bigint(name, { mode: "number", unsigned: true });
 
 export const categories = mysqlTable(
@@ -266,7 +271,9 @@ export const paymentEvents = mysqlTable(
     action: varchar("action", { length: 96 }).notNull(),
     processedStatus: varchar("processed_status", { length: 96 }).notNull(),
     createdAt: createdAt(),
-    processedAt: timestamp("processed_at", { mode: "date", fsp: 3 }).defaultNow().notNull(),
+    processedAt: timestamp("processed_at", { mode: "date", fsp: 3 })
+      .default(currentTimestamp3())
+      .notNull(),
   },
   (table) => [
     uniqueIndex("payment_events_provider_event_unique").on(table.provider, table.providerEventKey),

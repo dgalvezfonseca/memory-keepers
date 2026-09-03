@@ -5,8 +5,8 @@ CREATE TABLE `categories` (
 	`description` text NOT NULL,
 	`sort_order` int unsigned NOT NULL DEFAULT 0,
 	`is_active` boolean NOT NULL DEFAULT true,
-	`created_at` timestamp(3) NOT NULL DEFAULT (now()),
-	`updated_at` timestamp(3) NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
+	`created_at` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+	`updated_at` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
 	CONSTRAINT `categories_id` PRIMARY KEY(`id`),
 	CONSTRAINT `categories_slug_unique` UNIQUE(`slug`)
 );
@@ -17,8 +17,8 @@ CREATE TABLE `customers` (
 	`last_name` varchar(140) NOT NULL,
 	`email` varchar(254) NOT NULL,
 	`phone` varchar(32) NOT NULL,
-	`created_at` timestamp(3) NOT NULL DEFAULT (now()),
-	`updated_at` timestamp(3) NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
+	`created_at` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+	`updated_at` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
 	CONSTRAINT `customers_id` PRIMARY KEY(`id`),
 	CONSTRAINT `customers_email_unique` UNIQUE(`email`)
 );
@@ -26,7 +26,7 @@ CREATE TABLE `customers` (
 CREATE TABLE `order_folio_counters` (
 	`year` int unsigned NOT NULL,
 	`last_value` int unsigned NOT NULL,
-	`updated_at` timestamp(3) NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
+	`updated_at` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
 	CONSTRAINT `order_folio_counters_year` PRIMARY KEY(`year`)
 );
 --> statement-breakpoint
@@ -41,8 +41,8 @@ CREATE TABLE `order_items` (
 	`quantity` int unsigned NOT NULL,
 	`subtotal` bigint unsigned NOT NULL,
 	`configuration_snapshot` json NOT NULL,
-	`created_at` timestamp(3) NOT NULL DEFAULT (now()),
-	`updated_at` timestamp(3) NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
+	`created_at` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+	`updated_at` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
 	CONSTRAINT `order_items_id` PRIMARY KEY(`id`),
 	CONSTRAINT `order_items_quantity_positive` CHECK(`order_items`.`quantity` > 0),
 	CONSTRAINT `order_items_unit_price_nonnegative` CHECK(`order_items`.`unit_price` >= 0),
@@ -54,7 +54,7 @@ CREATE TABLE `order_status_history` (
 	`order_id` int unsigned NOT NULL,
 	`status` enum('pedido_recibido','esperando_material','material_recibido','digitalizacion','control_calidad','preparando_entrega','enviado','entregado','cancelado') NOT NULL,
 	`note` varchar(500),
-	`created_at` timestamp(3) NOT NULL DEFAULT (now()),
+	`created_at` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 	CONSTRAINT `order_status_history_id` PRIMARY KEY(`id`)
 );
 --> statement-breakpoint
@@ -69,8 +69,8 @@ CREATE TABLE `orders` (
 	`discount` bigint unsigned NOT NULL DEFAULT 0,
 	`shipping` bigint unsigned NOT NULL DEFAULT 0,
 	`total` bigint unsigned NOT NULL,
-	`created_at` timestamp(3) NOT NULL DEFAULT (now()),
-	`updated_at` timestamp(3) NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
+	`created_at` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+	`updated_at` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
 	CONSTRAINT `orders_id` PRIMARY KEY(`id`),
 	CONSTRAINT `orders_folio_unique` UNIQUE(`folio`),
 	CONSTRAINT `orders_subtotal_nonnegative` CHECK(`orders`.`subtotal` >= 0),
@@ -90,8 +90,8 @@ CREATE TABLE `payments` (
 	`amount` bigint unsigned NOT NULL,
 	`currency` char(3) NOT NULL DEFAULT 'MXN',
 	`external_reference` varchar(64) NOT NULL,
-	`created_at` timestamp(3) NOT NULL DEFAULT (now()),
-	`updated_at` timestamp(3) NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
+	`created_at` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+	`updated_at` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
 	CONSTRAINT `payments_id` PRIMARY KEY(`id`),
 	CONSTRAINT `payments_provider_preference_unique` UNIQUE(`provider`,`provider_preference_id`),
 	CONSTRAINT `payments_provider_payment_unique` UNIQUE(`provider`,`provider_payment_id`),
@@ -107,8 +107,8 @@ CREATE TABLE `product_variants` (
 	`metadata` json,
 	`is_active` boolean NOT NULL DEFAULT true,
 	`sort_order` int unsigned NOT NULL DEFAULT 0,
-	`created_at` timestamp(3) NOT NULL DEFAULT (now()),
-	`updated_at` timestamp(3) NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
+	`created_at` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+	`updated_at` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
 	CONSTRAINT `product_variants_id` PRIMARY KEY(`id`),
 	CONSTRAINT `product_variants_code_unique` UNIQUE(`code`),
 	CONSTRAINT `product_variants_price_nonnegative` CHECK(`product_variants`.`price` >= 0)
@@ -124,8 +124,8 @@ CREATE TABLE `products` (
 	`base_price` bigint unsigned NOT NULL,
 	`currency` char(3) NOT NULL DEFAULT 'MXN',
 	`is_active` boolean NOT NULL DEFAULT true,
-	`created_at` timestamp(3) NOT NULL DEFAULT (now()),
-	`updated_at` timestamp(3) NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
+	`created_at` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+	`updated_at` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
 	CONSTRAINT `products_id` PRIMARY KEY(`id`),
 	CONSTRAINT `products_slug_unique` UNIQUE(`slug`),
 	CONSTRAINT `products_base_price_nonnegative` CHECK(`products`.`base_price` >= 0)
