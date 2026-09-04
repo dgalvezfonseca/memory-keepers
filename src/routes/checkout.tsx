@@ -71,7 +71,7 @@ function CheckoutPage() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [preparedCheckout, setPreparedCheckout] = useState<{
     folio: string;
-    amount: number;
+    initialization: { amount: number };
     publicKey: string;
   } | null>(null);
   const [isBrickInitialized, setIsBrickInitialized] = useState(false);
@@ -312,12 +312,12 @@ function CheckoutPage() {
                   <h2 className="mt-2 font-serif text-2xl">Elige cómo pagar</h2>
                 </div>
                 <span className="text-sm font-semibold">
-                  {formatPrice(preparedCheckout.amount * 100)}
+                  {formatPrice(preparedCheckout.initialization.amount * 100)}
                 </span>
               </div>
               {isBrickInitialized ? (
                 <Payment
-                  initialization={{ amount: preparedCheckout.amount }}
+                  initialization={preparedCheckout.initialization}
                   customization={{
                     paymentMethods: {
                       creditCard: "all",

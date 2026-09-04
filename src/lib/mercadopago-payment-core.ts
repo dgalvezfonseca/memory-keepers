@@ -7,6 +7,10 @@ export function toMercadoPagoBrickAmount(orderTotalCentavos: number): number {
   return orderTotalCentavos / 100;
 }
 
+export function buildPaymentBrickInitialization(orderTotalCentavos: number): { amount: number } {
+  return { amount: toMercadoPagoBrickAmount(orderTotalCentavos) };
+}
+
 export type MercadoPagoBrickPaymentRequest = {
   transaction_amount: number;
   payment_method_id: string;

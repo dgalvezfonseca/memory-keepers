@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 
 import { checkoutIntentSchema, mercadoPagoBrickPaymentSchema } from "./checkout-input";
-import { toMercadoPagoBrickAmount } from "./mercadopago-payment-core";
+import { buildPaymentBrickInitialization } from "./mercadopago-payment-core";
 
 function getErrorCode(error: unknown): string | undefined {
   let current = error;
@@ -67,7 +67,7 @@ export const prepareMercadoPagoBricksCheckout = createServerFn({ method: "POST" 
       const order = await createOrderFromCheckoutIntent(data);
       return {
         folio: order.folio,
-        amount: toMercadoPagoBrickAmount(order.total),
+        initialization: buildPaymentBrickInitialization(order.total),
         publicKey,
       };
     } catch (error) {
