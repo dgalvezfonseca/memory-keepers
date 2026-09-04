@@ -74,7 +74,7 @@ function CartPage() {
             <Link to="/checkout">Continuar</Link>
           </Button>
           <p className="mt-4 text-center text-xs text-muted-foreground">
-            El pago continúa en el Checkout Pro seguro de Mercado Pago.
+            El pago se procesa de forma segura con Mercado Pago dentro de Mikuva.
           </p>
         </aside>
       </div>

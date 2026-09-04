@@ -1,12 +1,17 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, Lock } from "lucide-react";
-import { useRef, useState, type FormEvent } from "react";
+import { Payment, initMercadoPago } from "@mercadopago/sdk-react";
+import { useEffect, useRef, useState, type ComponentProps, type FormEvent } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useCart } from "@/hooks/use-cart";
-import { beginMercadoPagoCheckout } from "@/lib/checkout";
+import {
+  beginMercadoPagoCheckout,
+  prepareMercadoPagoBricksCheckout,
+  submitMercadoPagoBrickPayment,
+} from "@/lib/checkout";
 import { formatPrice } from "@/lib/format";
 import { routeMeta } from "@/lib/seo";
 
@@ -58,13 +63,27 @@ function getRequiredString(formData: FormData, name: string): string {
   return typeof value === "string" ? value : "";
 }
 
+type PaymentBrickSubmitData = Parameters<ComponentProps<typeof Payment>["onSubmit"]>[0];
+
 function CheckoutPage() {
   const { items, subtotal } = useCart();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [preparedCheckout, setPreparedCheckout] = useState<{
+    folio: string;
+    amount: number;
+    publicKey: string;
+  } | null>(null);
+  const [brickUnavailable, setBrickUnavailable] = useState(false);
   const checkoutRequestId = useRef<string | null>(null);
   const submissionLock = useRef(false);
+  const checkoutFormRef = useRef<HTMLFormElement | null>(null);
   const hasLegacyItems = items.some((item) => !item.config.variantCode);
+
+  useEffect(() => {
+    if (preparedCheckout?.publicKey)
+      initMercadoPago(preparedCheckout.publicKey, { locale: "es-MX" });
+  }, [preparedCheckout?.publicKey]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -84,7 +103,7 @@ function CheckoutPage() {
     try {
       checkoutRequestId.current ??= window.crypto.randomUUID();
       const formData = new FormData(event.currentTarget);
-      const result = await beginMercadoPagoCheckout({
+      const result = await prepareMercadoPagoBricksCheckout({
         data: {
           checkoutRequestId: checkoutRequestId.current,
           customer: {
@@ -100,13 +119,94 @@ function CheckoutPage() {
           })),
         },
       });
-
-      window.location.assign(result.initPoint);
+      setPreparedCheckout(result);
+      setBrickUnavailable(false);
+      setIsSubmitting(false);
     } catch (error) {
       setErrorMessage(
         error instanceof Error
           ? error.message
           : "No pudimos iniciar el pago. Inténtalo nuevamente.",
+      );
+      submissionLock.current = false;
+      setIsSubmitting(false);
+    }
+  }
+
+  async function handleBrickSubmit(data: PaymentBrickSubmitData) {
+    if (!preparedCheckout || submissionLock.current) return;
+    submissionLock.current = true;
+    setIsSubmitting(true);
+    setErrorMessage(null);
+
+    try {
+      const brickFormData = data.formData as {
+        payment_method_id: string;
+        token?: string;
+        installments?: number;
+        issuer_id?: string | number;
+      };
+      const result = await submitMercadoPagoBrickPayment({
+        data: {
+          folio: preparedCheckout.folio,
+          paymentType: data.paymentType,
+          selectedPaymentMethod: data.selectedPaymentMethod,
+          formData: {
+            payment_method_id: brickFormData.payment_method_id,
+            ...(brickFormData.token ? { token: brickFormData.token } : {}),
+            ...(brickFormData.installments ? { installments: brickFormData.installments } : {}),
+            ...(brickFormData.issuer_id !== undefined
+              ? { issuer_id: brickFormData.issuer_id }
+              : {}),
+          },
+        },
+      });
+      window.location.assign(`/pago/pendiente?folio=${encodeURIComponent(preparedCheckout.folio)}`);
+      return result;
+    } catch (error) {
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : "No pudimos procesar el pago. Inténtalo nuevamente.",
+      );
+      submissionLock.current = false;
+      setIsSubmitting(false);
+    }
+    return undefined;
+  }
+
+  async function handleCheckoutProFallback() {
+    const form = checkoutFormRef.current;
+    if (!form || !form.reportValidity() || submissionLock.current || !items.length) return;
+
+    submissionLock.current = true;
+    setIsSubmitting(true);
+    setErrorMessage(null);
+
+    try {
+      const formData = new FormData(form);
+      const result = await beginMercadoPagoCheckout({
+        data: {
+          checkoutRequestId: checkoutRequestId.current ?? window.crypto.randomUUID(),
+          customer: {
+            firstName: getRequiredString(formData, "nombre"),
+            lastName: getRequiredString(formData, "apellidos"),
+            email: getRequiredString(formData, "email"),
+            phone: getRequiredString(formData, "telefono"),
+          },
+          items: items.map((item) => ({
+            productSlug: item.productSlug,
+            variantCode: item.config.variantCode ?? null,
+            quantity: item.quantity,
+          })),
+        },
+      });
+      window.location.assign(result.initPoint);
+    } catch (error) {
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : "No pudimos iniciar Mercado Pago. Inténtalo nuevamente.",
       );
       submissionLock.current = false;
       setIsSubmitting(false);
@@ -125,6 +225,7 @@ function CheckoutPage() {
       <h1 className="display mt-3 text-4xl sm:text-5xl">Finaliza tu solicitud</h1>
       <div className="mt-10 grid gap-12 lg:grid-cols-[1fr_380px] lg:items-start">
         <form
+          ref={checkoutFormRef}
           onSubmit={handleSubmit}
           onChange={() => {
             checkoutRequestId.current = null;
@@ -163,21 +264,80 @@ function CheckoutPage() {
             </p>
           )}
 
-          <div>
-            <Button
-              type="submit"
-              size="lg"
-              className="min-h-11 w-full rounded-full"
-              disabled={isSubmitting || !items.length || hasLegacyItems}
-            >
-              <Lock aria-hidden />
-              {isSubmitting ? "Preparando pago…" : "Pagar con Mercado Pago"}
-            </Button>
-            <p className="mt-3 text-center text-xs leading-relaxed text-muted-foreground">
-              Continuarás al Checkout Pro de Mercado Pago. En MP-2 sólo se permiten credenciales y
-              compradores de prueba.
-            </p>
-          </div>
+          {!preparedCheckout ? (
+            <div>
+              <Button
+                type="submit"
+                size="lg"
+                className="min-h-11 w-full rounded-full"
+                disabled={isSubmitting || !items.length || hasLegacyItems}
+              >
+                <Lock aria-hidden />
+                {isSubmitting ? "Preparando pago…" : "Continuar al pago"}
+              </Button>
+              <p className="mt-3 text-center text-xs leading-relaxed text-muted-foreground">
+                Tus datos de tarjeta se capturan directamente en Mercado Pago. Mikuva no almacena
+                números de tarjeta ni códigos de seguridad.
+              </p>
+              <Button
+                type="button"
+                variant="outline"
+                className="mt-3 min-h-11 w-full rounded-full"
+                disabled={isSubmitting || !items.length || hasLegacyItems}
+                onClick={handleCheckoutProFallback}
+              >
+                Pagar con Mercado Pago
+              </Button>
+            </div>
+          ) : (
+            <div className="border-t border-border pt-8">
+              <div className="mb-5 flex items-start justify-between gap-4">
+                <div>
+                  <p className="eyebrow">Pago</p>
+                  <h2 className="mt-2 font-serif text-2xl">Elige cómo pagar</h2>
+                </div>
+                <span className="text-sm font-semibold">
+                  {formatPrice(preparedCheckout.amount * 100)}
+                </span>
+              </div>
+              <Payment
+                initialization={{ amount: preparedCheckout.amount }}
+                customization={{
+                  paymentMethods: {
+                    creditCard: "all",
+                    types: {
+                      included: [
+                        "creditCard",
+                        "debitCard",
+                        "prepaidCard",
+                        "ticket",
+                        "wallet_purchase",
+                      ],
+                    },
+                  },
+                }}
+                locale="es-MX"
+                onSubmit={handleBrickSubmit}
+                onError={() => {
+                  setBrickUnavailable(true);
+                  setErrorMessage(
+                    "No pudimos cargar el formulario de pago. Puedes usar Mercado Pago como alternativa.",
+                  );
+                }}
+              />
+              {brickUnavailable && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="mt-4 min-h-11 w-full rounded-full"
+                  disabled={isSubmitting}
+                  onClick={handleCheckoutProFallback}
+                >
+                  Pagar con Mercado Pago
+                </Button>
+              )}
+            </div>
+          )}
         </form>
 
         <aside className="rounded-xl border border-border bg-card p-6 lg:sticky lg:top-28">

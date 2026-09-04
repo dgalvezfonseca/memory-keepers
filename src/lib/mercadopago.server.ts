@@ -6,8 +6,11 @@ import { and, eq, isNotNull } from "drizzle-orm";
 import { MercadoPagoConfig, Payment, Preference } from "mercadopago";
 
 import { getDatabase } from "@/db/index.server";
-import { getOrderById } from "@/db/orders.server";
-import { payments } from "@/db/schema";
+import { getOrderByFolio, getOrderById } from "@/db/orders.server";
+import { orders, payments } from "@/db/schema";
+import { mercadoPagoBrickPaymentSchema, type MercadoPagoBrickPayment } from "@/lib/checkout-input";
+import { buildMercadoPagoBrickPaymentRequest } from "@/lib/mercadopago-payment-core";
+import { mapMercadoPagoStatus } from "@/lib/mercadopago-webhook-core";
 
 let cachedToken: string | undefined;
 let cachedClient: MercadoPagoConfig | undefined;
@@ -43,9 +46,77 @@ function getPaymentClient(): Payment {
   return cachedPaymentClient;
 }
 
+export function getMercadoPagoPublicKey(): string {
+  const publicKey = process.env["MERCADOPAGO_PUBLIC_KEY"]?.trim();
+  if (!publicKey) throw new Error("MERCADOPAGO_PUBLIC_KEY is required.");
+  return publicKey;
+}
+
 export async function getMercadoPagoPayment(paymentId: string) {
   if (!/^\d+$/.test(paymentId)) throw new Error("Mercado Pago payment ID is invalid.");
   return getPaymentClient().get({ id: paymentId });
+}
+
+export async function createMercadoPagoBrickPayment(input: MercadoPagoBrickPayment) {
+  const parsed = mercadoPagoBrickPaymentSchema.parse(input);
+  const order = await getOrderByFolio(parsed.folio);
+  if (!order) throw new Error("Order was not found.");
+  if (order.currency !== "MXN") throw new Error("Payment Brick only supports MXN orders.");
+
+  const existingPayment = order.payments.find(
+    (payment) => payment.provider === "mercadopago" && payment.providerPaymentId,
+  );
+  if (existingPayment?.providerPaymentId) {
+    return {
+      paymentId: existingPayment.providerPaymentId,
+      status: existingPayment.status,
+      statusDetail: "already_created",
+    };
+  }
+
+  const paymentBody: Parameters<Payment["create"]>[0]["body"] = buildMercadoPagoBrickPaymentRequest(
+    {
+      payment: parsed,
+      orderTotalCentavos: order.total,
+      orderFolio: order.folio,
+      orderDescription: order.items.map((item) => item.productNameSnapshot).join(", "),
+      payerEmail: order.customer.email,
+      payerFirstName: order.customer.firstName,
+      payerLastName: order.customer.lastName,
+    },
+  );
+
+  const payment = await getPaymentClient().create({
+    body: paymentBody,
+    requestOptions: { idempotencyKey: `mikuva-payment-${order.folio}` },
+  });
+  if (!payment.id) throw new Error("Mercado Pago did not return a payment ID.");
+
+  const db = getDatabase();
+  const localStatus = mapMercadoPagoStatus(payment.status ?? "") ?? "pending";
+  await db
+    .insert(payments)
+    .values({
+      orderId: order.id,
+      provider: "mercadopago",
+      providerPreferenceId: null,
+      providerPaymentId: String(payment.id),
+      status: localStatus,
+      amount: order.total,
+      currency: order.currency,
+      externalReference: order.folio,
+    })
+    .onDuplicateKeyUpdate({
+      set: { providerPaymentId: String(payment.id), status: localStatus, updatedAt: new Date() },
+    });
+
+  await db.update(orders).set({ paymentStatus: localStatus }).where(eq(orders.id, order.id));
+
+  return {
+    paymentId: String(payment.id),
+    status: payment.status ?? "pending",
+    statusDetail: payment.status_detail ?? null,
+  };
 }
 
 function getAppOrigin(): string {
