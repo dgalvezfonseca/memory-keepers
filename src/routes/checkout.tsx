@@ -74,6 +74,7 @@ function CheckoutPage() {
     amount: number;
     publicKey: string;
   } | null>(null);
+  const [isBrickInitialized, setIsBrickInitialized] = useState(false);
   const [brickUnavailable, setBrickUnavailable] = useState(false);
   const checkoutRequestId = useRef<string | null>(null);
   const submissionLock = useRef(false);
@@ -81,8 +82,21 @@ function CheckoutPage() {
   const hasLegacyItems = items.some((item) => !item.config.variantCode);
 
   useEffect(() => {
-    if (preparedCheckout?.publicKey)
+    if (!preparedCheckout?.publicKey) {
+      setIsBrickInitialized(false);
+      return;
+    }
+
+    try {
       initMercadoPago(preparedCheckout.publicKey, { locale: "es-MX" });
+      setIsBrickInitialized(true);
+    } catch {
+      setIsBrickInitialized(false);
+      setBrickUnavailable(true);
+      setErrorMessage(
+        "No pudimos inicializar el formulario de pago. Puedes usar Mercado Pago como alternativa.",
+      );
+    }
   }, [preparedCheckout?.publicKey]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -120,6 +134,7 @@ function CheckoutPage() {
         },
       });
       setPreparedCheckout(result);
+      setIsBrickInitialized(false);
       setBrickUnavailable(false);
       setIsSubmitting(false);
     } catch (error) {
@@ -300,31 +315,37 @@ function CheckoutPage() {
                   {formatPrice(preparedCheckout.amount * 100)}
                 </span>
               </div>
-              <Payment
-                initialization={{ amount: preparedCheckout.amount }}
-                customization={{
-                  paymentMethods: {
-                    creditCard: "all",
-                    types: {
-                      included: [
-                        "creditCard",
-                        "debitCard",
-                        "prepaidCard",
-                        "ticket",
-                        "wallet_purchase",
-                      ],
+              {isBrickInitialized ? (
+                <Payment
+                  initialization={{ amount: preparedCheckout.amount }}
+                  customization={{
+                    paymentMethods: {
+                      creditCard: "all",
+                      types: {
+                        included: [
+                          "creditCard",
+                          "debitCard",
+                          "prepaidCard",
+                          "ticket",
+                          "wallet_purchase",
+                        ],
+                      },
                     },
-                  },
-                }}
-                locale="es-MX"
-                onSubmit={handleBrickSubmit}
-                onError={() => {
-                  setBrickUnavailable(true);
-                  setErrorMessage(
-                    "No pudimos cargar el formulario de pago. Puedes usar Mercado Pago como alternativa.",
-                  );
-                }}
-              />
+                  }}
+                  locale="es-MX"
+                  onSubmit={handleBrickSubmit}
+                  onError={() => {
+                    setBrickUnavailable(true);
+                    setErrorMessage(
+                      "No pudimos cargar el formulario de pago. Puedes usar Mercado Pago como alternativa.",
+                    );
+                  }}
+                />
+              ) : (
+                <p role="status" className="text-sm text-muted-foreground">
+                  Cargando opciones de pago…
+                </p>
+              )}
               {brickUnavailable && (
                 <Button
                   type="button"

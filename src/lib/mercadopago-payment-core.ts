@@ -1,5 +1,12 @@
 import type { MercadoPagoBrickPayment } from "./checkout-input";
 
+export function toMercadoPagoBrickAmount(orderTotalCentavos: number): number {
+  if (!Number.isSafeInteger(orderTotalCentavos) || orderTotalCentavos < 0) {
+    throw new Error("Order total must be a non-negative integer amount in centavos.");
+  }
+  return orderTotalCentavos / 100;
+}
+
 export type MercadoPagoBrickPaymentRequest = {
   transaction_amount: number;
   payment_method_id: string;

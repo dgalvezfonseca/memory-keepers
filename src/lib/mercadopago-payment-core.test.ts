@@ -2,7 +2,10 @@ import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 
 import { mercadoPagoBrickPaymentSchema } from "./checkout-input";
-import { buildMercadoPagoBrickPaymentRequest } from "./mercadopago-payment-core";
+import {
+  buildMercadoPagoBrickPaymentRequest,
+  toMercadoPagoBrickAmount,
+} from "./mercadopago-payment-core";
 
 const basePayment = {
   folio: "MK-2026-00001",
@@ -16,6 +19,10 @@ const basePayment = {
 };
 
 describe("Mercado Pago Payment Brick request", () => {
+  test("converts order cents to the Brick initialization amount", () => {
+    assert.equal(toMercadoPagoBrickAmount(72500), 725);
+  });
+
   test("uses the server order total instead of the Brick amount", () => {
     const payment = mercadoPagoBrickPaymentSchema.parse(basePayment);
     const request = buildMercadoPagoBrickPaymentRequest({
